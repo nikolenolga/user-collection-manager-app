@@ -11,13 +11,13 @@ public class User implements Comparable<User> {
     private final String email;
     private final int age;
 
-    User(BuilderIMPL<User> builder) {
-        this.name = builder.getFieldOne();
-        this.email = builder.getFieldTwo();
-        this.age = builder.getFieldInt();
+    User(BuilderForUser builder) {
+        this.name = builder.getName();
+        this.email = builder.getEmail();
+        this.age = builder.getAge();
     }
 
-    public static Builder<User> builder() {
+    public static BuilderForUser builder() {
         return new BuilderForUser();
     }
 

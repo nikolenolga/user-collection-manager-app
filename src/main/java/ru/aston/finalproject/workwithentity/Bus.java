@@ -11,13 +11,13 @@ public class Bus implements Comparable<Bus> {
     private final String mileageInKilometers;
     private final int number;
 
-    Bus(BuilderIMPL<Bus> builder){
-        this.model = builder.getFieldOne();
-        this.mileageInKilometers = builder.getFieldTwo();
-        this.number = builder.getFieldInt();
+    Bus(BuilderForBus builder){
+        this.model = builder.getModel();
+        this.mileageInKilometers = builder.getMileageInKilometers();
+        this.number = builder.getNumber();
     }
 
-    public static Builder<Bus> builder() {
+    public static BuilderForBus builder() {
         return new BuilderForBus();
     }
 
