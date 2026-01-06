@@ -17,7 +17,7 @@ public class Bus implements Comparable<Bus> {
         this.number = builder.getNumber();
     }
 
-    public static BuilderForBus builder() {
+    public static Builder<Bus> builder() {
         return new BuilderForBus();
     }
 

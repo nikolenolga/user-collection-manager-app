@@ -1,5 +1,9 @@
 package ru.aston.finalproject.constants;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 import static ru.aston.finalproject.constants.ConstantFields.DELIMITER;
 import static ru.aston.finalproject.constants.ConstantFields.EMAIL_FORM;
 import static ru.aston.finalproject.constants.ConstantFields.KM;
@@ -92,4 +96,12 @@ public class ConstantMethods {
         return dataArray;
     }
 
+    public static List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        if (clazz == null || clazz == Object.class) {
+            return fields;
+        }
+        fields.addAll(List.of(clazz.getDeclaredFields()));
+        return fields;
+    }
 }

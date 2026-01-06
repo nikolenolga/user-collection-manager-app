@@ -17,7 +17,7 @@ public class User implements Comparable<User> {
         this.age = builder.getAge();
     }
 
-    public static BuilderForUser builder() {
+    public static Builder<User> builder() {
         return new BuilderForUser();
     }
 

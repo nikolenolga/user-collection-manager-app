@@ -5,8 +5,7 @@ import ru.aston.finalproject.validators.UserValidator;
 import ru.aston.finalproject.validators.Validator;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import static ru.aston.finalproject.constants.ConstantMethods.getAllFields;
 
 @Getter
 public class BuilderForUser implements Builder<User> {
@@ -18,49 +17,28 @@ public class BuilderForUser implements Builder<User> {
     BuilderForUser() {
     }
 
-    public static List<Field> getAllFields(Class<?> clazz) {
-        List<Field> fields = new ArrayList<>();
-        if (clazz == null || clazz == Object.class) {
-            return fields;
-        }
-        fields.addAll(List.of(clazz.getDeclaredFields()));
-        return fields;
-    }
-
-    public BuilderForUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public BuilderForUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public BuilderForUser setAge(int age) {
-        this.age = age;
-        return this;
-    }
-
     @Override
-    public BuilderForUser setField(String fieldType, String fieldName, Object value) {
-        if (fieldType.equals("String")) {
-            if (fieldName.equals("name")) {
-                value = this.name;
-                return this;
-            }
-            if (fieldName.equals("email")) {
-                value = this.email;
-                return this;
+    public BuilderForUser setField(String fieldName, Object value) {
+
+        for (Field field : getAllFields(Bus.class)) {
+            if (field.getName().equals(fieldName)) {
+                switch (fieldName) {
+                    case "name" -> {
+                        this.name = (String) value;
+                        return this;
+                    }
+                    case "email" -> {
+                        this.email = (String) value;
+                        return this;
+                    }
+                    case "age" -> {
+                        this.age = (int) value;
+                        return this;
+                    }
+                }
             }
         }
-        if (fieldType.equals("int")) {
-            if (fieldName.equals("age")) {
-                value = this.age;
-                return this;
-            }
-        }
-        return null;
+        throw new IllegalArgumentException("It's not possible to set this field");
     }
 
     @Override
@@ -71,10 +49,6 @@ public class BuilderForUser implements Builder<User> {
     }
 
     public static void main(String[] args) {
-//        BuilderForUser builder = new BuilderForUser();
-//        for (Field field : builder.getAllFields(Bus.class)) {
-//            System.out.println(field.getName() + " " +  field.getType().getSimpleName());
-//        }
 
         BuildConcreteEntity buildConcreteEntity = new BuildConcreteEntity();
         Bus bus = buildConcreteEntity.buildBus("Mercedes", "234243km.", 3453);
