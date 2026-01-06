@@ -18,27 +18,31 @@ public class BuilderForUser implements Builder<User> {
     }
 
     @Override
-    public BuilderForUser setField(String fieldName, Object value) {
-
-        for (Field field : getAllFields(Bus.class)) {
+    public BuilderForUser setValueForField(String fieldName, Object value) {
+        for (Field field : getAllFields(User.class)) {
             if (field.getName().equals(fieldName)) {
-                switch (fieldName) {
-                    case "name" -> {
-                        this.name = (String) value;
-                        return this;
-                    }
-                    case "email" -> {
-                        this.email = (String) value;
-                        return this;
-                    }
-                    case "age" -> {
-                        this.age = (int) value;
-                        return this;
-                    }
-                }
+                return switchFieldAndSetValue(fieldName, value);
             }
         }
         throw new IllegalArgumentException("It's not possible to set this field");
+    }
+
+    private BuilderForUser switchFieldAndSetValue(String fieldName, Object value) {
+        switch (fieldName) {
+            case "name" -> {
+                this.name = (String) value;
+                return this;
+            }
+            case "email" -> {
+                this.email = (String) value;
+                return this;
+            }
+            case "age" -> {
+                this.age = (int) value;
+                return this;
+            }
+            default -> {throw new IllegalArgumentException("It's not possible to set this field");}
+        }
     }
 
     @Override

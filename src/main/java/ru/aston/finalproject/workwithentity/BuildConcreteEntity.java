@@ -4,15 +4,15 @@ public class BuildConcreteEntity {
 
     public Bus buildBus(String model, String mileageInKilometers, int number) {
         return Bus.builder().
-                setField("model", model).
-                setField("mileageInKilometers", mileageInKilometers).
-                setField("number", number).build();
+                setValueForField("model", model).
+                setValueForField("mileageInKilometers", mileageInKilometers).
+                setValueForField("number", number).build();
     }
 
     public User buildUser(String name, String email, int age) {
         return User.builder().
-                setField("name", name).
-                setField("email", email).
-                setField("age", age).build();
+                setValueForField("name", name).
+                setValueForField("email", email).
+                setValueForField("age", age).build();
     }
 }

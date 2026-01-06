@@ -19,27 +19,32 @@ public class BuilderForBus implements Builder<Bus> {
     }
 
     @Override
-    public BuilderForBus setField(String fieldName, Object value) {
+    public BuilderForBus setValueForField(String fieldName, Object value) {
 
         for (Field field : getAllFields(Bus.class)) {
             if (field.getName().equals(fieldName)) {
-                switch (fieldName) {
-                    case "model" -> {
-                        this.model = (String) value;
-                        return this;
-                    }
-                    case "mileageInKilometers" -> {
-                        this.mileageInKilometers = (String) value;
-                        return this;
-                    }
-                    case "number" -> {
-                        this.number = (int) value;
-                        return this;
-                    }
-                }
+                return switchFieldAndSetValue(fieldName, value);
             }
         }
         throw new IllegalArgumentException("It's not possible to set this field");
+    }
+
+    private BuilderForBus switchFieldAndSetValue(String fieldName, Object value) {
+        switch (fieldName) {
+            case "model" -> {
+                this.model = (String) value;
+                return this;
+            }
+            case "mileageInKilometers" -> {
+                this.mileageInKilometers = (String) value;
+                return this;
+            }
+            case "number" -> {
+                this.number = (int) value;
+                return this;
+            }
+            default -> throw new IllegalArgumentException("It's not possible to set this field");
+        }
     }
 
     @Override

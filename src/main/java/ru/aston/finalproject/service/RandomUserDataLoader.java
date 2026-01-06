@@ -2,9 +2,7 @@ package ru.aston.finalproject.service;
 
 import net.datafaker.Faker;
 import ru.aston.finalproject.workwithentity.Builder;
-import ru.aston.finalproject.workwithentity.BuilderForUser;
 import ru.aston.finalproject.workwithentity.User;
-import ru.aston.finalproject.validators.UserValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,9 +22,9 @@ public class RandomUserDataLoader implements DataLoader<User> {
     @Override
     public List<User> loadEntityList(Integer size) {
         return Stream.generate(User::builder)
-                .map(builder -> builder.setField("name", faker.name().firstName()))
-                .map(builder -> builder.setField("email", faker.internet().emailAddress()))
-                .map(builder -> builder.setField("age", faker.number().numberBetween(MIN_AGE, MAX_AGE)))
+                .map(builder -> builder.setValueForField("name", faker.name().firstName()))
+                .map(builder -> builder.setValueForField("email", faker.internet().emailAddress()))
+                .map(builder -> builder.setValueForField("age", faker.number().numberBetween(MIN_AGE, MAX_AGE)))
                 .map(Builder::build)
                 .limit(size)
                 .collect(Collectors.toList());
