@@ -20,7 +20,6 @@ public class BuilderForBus implements Builder<Bus> {
 
     @Override
     public BuilderForBus setValueForField(String fieldName, Object value) {
-
         for (Field field : getAllFields(Bus.class)) {
             if (field.getName().equals(fieldName)) {
                 return switchFieldAndSetValue(fieldName, value);
