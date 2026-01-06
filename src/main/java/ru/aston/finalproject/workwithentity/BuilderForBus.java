@@ -22,7 +22,6 @@ public class BuilderForBus implements Builder<Bus> {
     public BuilderForBus setField(String fieldName, Object value) {
 
         for (Field field : getAllFields(Bus.class)) {
-
             if (field.getName().equals(fieldName)) {
                 switch (fieldName) {
                     case "model" -> {
