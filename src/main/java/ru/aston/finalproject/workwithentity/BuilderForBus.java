@@ -4,6 +4,10 @@ import lombok.Getter;
 import ru.aston.finalproject.validators.BusValidator;
 import ru.aston.finalproject.validators.Validator;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class BuilderForBus implements Builder<Bus> {
 
@@ -14,19 +18,39 @@ public class BuilderForBus implements Builder<Bus> {
     BuilderForBus() {
     }
 
-    public BuilderForBus setModel(String model) {
-        this.model = model;
-        return this;
+    public static List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        if (clazz == null || clazz == Object.class) {
+            return fields;
+        }
+        fields.addAll(List.of(clazz.getDeclaredFields()));
+        return fields;
     }
 
-    public BuilderForBus setMileageInKilometers(String mileageInKilometers) {
-        this.mileageInKilometers = mileageInKilometers;
-        return this;
-    }
+    @Override
+    public BuilderForBus setField(String fieldType, String fieldName, Object value) {
 
-    public BuilderForBus setNumber(int number) {
-        this.number = number;
-        return this;
+        for (Field field : getAllFields(Bus.class)) {
+            if (field.getType().getSimpleName().equals(fieldType)) {
+                if (fieldType.equals("String")) {
+                    if (field.getName().equals(fieldName) && fieldName.equals("model")) {
+                        this.model = (String) value;
+                        return this;
+                    }
+                    if (field.getName().equals(fieldName) && fieldName.equals("mileageInKilometers")) {
+                        this.mileageInKilometers = (String) value;
+                        return this;
+                    }
+                }
+                if (fieldType.equals("int")) {
+                    if (fieldName.equals("number")) {
+                        this.number = (int) value;
+                        return this;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override

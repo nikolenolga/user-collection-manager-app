@@ -4,6 +4,10 @@ import lombok.Getter;
 import ru.aston.finalproject.validators.UserValidator;
 import ru.aston.finalproject.validators.Validator;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class BuilderForUser implements Builder<User> {
 
@@ -12,6 +16,15 @@ public class BuilderForUser implements Builder<User> {
     private int age;
 
     BuilderForUser() {
+    }
+
+    public static List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        if (clazz == null || clazz == Object.class) {
+            return fields;
+        }
+        fields.addAll(List.of(clazz.getDeclaredFields()));
+        return fields;
     }
 
     public BuilderForUser setName(String name) {
@@ -30,9 +43,42 @@ public class BuilderForUser implements Builder<User> {
     }
 
     @Override
+    public BuilderForUser setField(String fieldType, String fieldName, Object value) {
+        if (fieldType.equals("String")) {
+            if (fieldName.equals("name")) {
+                value = this.name;
+                return this;
+            }
+            if (fieldName.equals("email")) {
+                value = this.email;
+                return this;
+            }
+        }
+        if (fieldType.equals("int")) {
+            if (fieldName.equals("age")) {
+                value = this.age;
+                return this;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public User build() {
         Validator<User> validator = new UserValidator();
         validator.validate(name, email, age);
         return new User(this);
+    }
+
+    public static void main(String[] args) {
+//        BuilderForUser builder = new BuilderForUser();
+//        for (Field field : builder.getAllFields(Bus.class)) {
+//            System.out.println(field.getName() + " " +  field.getType().getSimpleName());
+//        }
+
+        BuildConcreteEntity buildConcreteEntity = new BuildConcreteEntity();
+        Bus bus = buildConcreteEntity.buildBus("Mercedes", "234243km.", 3453);
+        System.out.println(bus);
+
     }
 }
