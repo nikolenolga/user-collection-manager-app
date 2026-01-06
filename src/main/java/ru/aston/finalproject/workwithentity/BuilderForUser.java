@@ -47,12 +47,4 @@ public class BuilderForUser implements Builder<User> {
         validator.validate(name, email, age);
         return new User(this);
     }
-
-    public static void main(String[] args) {
-
-        BuildConcreteEntity buildConcreteEntity = new BuildConcreteEntity();
-        Bus bus = buildConcreteEntity.buildBus("Mercedes", "234243km.", 3453);
-        System.out.println(bus);
-
-    }
 }
