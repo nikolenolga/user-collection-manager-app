@@ -1,16 +1,17 @@
 package ru.aston.finalproject.service.sorting;
 
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
-public class StrangeSorter {
+@AllArgsConstructor
+public class StrangeSorter<T> {
+    private final MergeSorter<T> mergeSorter;
 
-    public <T> List<T> sort(
-            List<T> list,
-            Function<T, Integer> getIntegerField
-    ) {
+    public List<T> sort(List<T> list, Function<T, Integer> getIntegerField) {
         List<T> evens = new ArrayList<>();
         List<Integer> sequentialPositionsOfEvens = new ArrayList<>();
 
@@ -24,7 +25,7 @@ public class StrangeSorter {
             }
         }
 
-        new MergeSorter().sort(evens, Comparator.comparing(getIntegerField));
+        mergeSorter.sort(evens, Comparator.comparing(getIntegerField));
 
         for (int i = 0; i < sequentialPositionsOfEvens.size(); i++) {
             list.set(

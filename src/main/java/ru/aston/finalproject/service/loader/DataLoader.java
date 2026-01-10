@@ -1,6 +1,6 @@
 package ru.aston.finalproject.service.loader;
 
-import ru.aston.finalproject.app.AppRequest;
+import ru.aston.finalproject.config.AppRequest;
 
 import java.util.List;
 

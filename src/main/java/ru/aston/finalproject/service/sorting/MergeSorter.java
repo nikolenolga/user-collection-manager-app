@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class MergeSorter extends Sorter {
-    public <T> List<T> sort(
-            List<T> list,
-            Comparator<T> comparator
-    ) {
+public class MergeSorter<T> {
+
+    public List<T> sort(List<T> list) {
+        return sort(list, (Comparator<T>) Comparator.naturalOrder());
+    }
+
+    public List<T> sort(List<T> list, Comparator<T> comparator) {
         if (list.size() <= 1) {
             return list;
         }
@@ -25,12 +27,8 @@ public class MergeSorter extends Sorter {
         return list;
     }
 
-    private <T> void merge(
-            List<T> result,
-            List<T> left,
-            List<T> right,
-            Comparator<T> comparator
-    ) {
+    private void merge(List<T> result, List<T> left, List<T> right,
+                       Comparator<T> comparator) {
         int i = 0;
         int j = 0;
         int k = 0;

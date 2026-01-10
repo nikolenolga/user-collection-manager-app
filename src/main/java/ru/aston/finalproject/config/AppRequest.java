@@ -1,4 +1,4 @@
-package ru.aston.finalproject.app;
+package ru.aston.finalproject.config;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;

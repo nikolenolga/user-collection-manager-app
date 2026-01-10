@@ -1,7 +1,7 @@
 package ru.aston.finalproject.service.loader;
 
 import net.datafaker.Faker;
-import ru.aston.finalproject.app.AppRequest;
+import ru.aston.finalproject.config.AppRequest;
 import ru.aston.finalproject.entity.User;
 
 import java.util.List;
