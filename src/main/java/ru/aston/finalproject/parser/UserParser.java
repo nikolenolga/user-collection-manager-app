@@ -4,15 +4,18 @@ import ru.aston.finalproject.appEnviroment.AppException;
 import ru.aston.finalproject.entity.BuildUser;
 import ru.aston.finalproject.entity.User;
 
+import static ru.aston.finalproject.entity.User.Builder.isAge;
+import static ru.aston.finalproject.entity.User.Builder.isEmail;
+import static ru.aston.finalproject.entity.User.Builder.isName;
 import static ru.aston.finalproject.staticTools.ConstantFields.DIGITS;
 import static ru.aston.finalproject.staticTools.ConstantFields.SPACE;
 import static ru.aston.finalproject.staticTools.ConstantMethods.checkedStringOnEmpty;
+import static ru.aston.finalproject.staticTools.Message.INPUT_ERROR_X;
 import static ru.aston.finalproject.staticTools.Message.INVALID_DATA_X;
 import static ru.aston.finalproject.staticTools.Message.USER_CANNOT_BE_NULL;
 
 public class UserParser implements Parsing<User> {
-
-    private final static String DIGITS_REGS = "\\D+";
+    private final static String NO_DIGITS_REGS = "\\D+";
     private final static String DELIMITER = " : ";
     public final static String USER_FORMAT = String.format("name%semail%sage", DELIMITER, DELIMITER);
 
@@ -25,7 +28,7 @@ public class UserParser implements Parsing<User> {
     }
 
     private String exampleEntity(String fieldOne, String fieldTwo, int fieldInt) {
-        return String.format(fieldOne + DELIMITER + fieldTwo + DELIMITER + fieldInt);
+        return String.format("%s%s%s%s%d", fieldOne, DELIMITER, fieldTwo, DELIMITER, fieldInt);
     }
 
     @Override
@@ -35,18 +38,9 @@ public class UserParser implements Parsing<User> {
 
     @Override
     public User parse(String data, String delimiter) {
-
         checkedStringOnEmpty(data, "data in parser");
-
-        BuildUser buildConcreteEntity = new BuildUser();
-
         String[] dataArray = preparingForParsing(data, delimiter);
-
-        String name = dataArray[0].trim();
-        String email = dataArray[1].trim();
-        int age = createdDigitFromFirstInteger(dataArray[2].trim());
-
-        return buildConcreteEntity.capitalizeNameAndNormalizedEmail(name, email, age);
+        return setArrayElementsForUserFields(dataArray);
     }
 
     private String[] preparingForParsing(String data, String delimiter) {
@@ -64,18 +58,52 @@ public class UserParser implements Parsing<User> {
     }
 
     private int createdDigitFromFirstInteger(String string) {
-        String numbersOnly = createdStringOnlyDigits(string);
-        checkedStringOnEmpty(numbersOnly, DIGITS);
-        return Integer.parseInt(numbersOnly.trim().split(SPACE)[0]);
-    }
-
-    private String createdStringOnlyDigits(String string) {
         checkedStringContainDigitsOnly(string);
-        return string;
+        return Integer.parseInt(string.trim().split(SPACE)[0]);
     }
 
     private void checkedStringContainDigitsOnly(String string) {
-        string = string.replaceAll(DIGITS_REGS, "").trim();
+        string = string.replaceAll(NO_DIGITS_REGS, "").trim();
         checkedStringOnEmpty(string, DIGITS);
+    }
+
+    private User setArrayElementsForUserFields(String[] fields) {
+        String name = null;
+        String email = null;
+        Integer age = null;
+
+        for (String field : fields) {
+            String trimmedField = field.trim();
+
+            try {
+                if (email == null && isEmail(trimmedField)) {
+                    email = trimmedField;
+                    continue;
+                }
+                if (name == null && isName(trimmedField)) {
+                    name = trimmedField;
+                    continue;
+                }
+                if (age == null) {
+                    try {
+                        int possibleAge = createdDigitFromFirstInteger(trimmedField);
+                        if (isAge(possibleAge)) {
+                            age = possibleAge;
+                            continue;
+                        }
+                    } catch (AppException e) {
+                    }
+                }
+
+            } catch (AppException e) {
+            }
+        }
+
+        if (name == null || email == null || age == null) {
+            throw new AppException(String.format(INPUT_ERROR_X, exampleEntity(name, email, age)));
+        }
+
+        BuildUser buildConcreteEntity = new BuildUser();
+        return buildConcreteEntity.capitalizeNameAndNormalizedEmail(name, email, age);
     }
 }

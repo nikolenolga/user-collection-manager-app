@@ -16,7 +16,7 @@ import static ru.aston.finalproject.staticTools.ConstantMethods.checkedStringOnE
 public class User implements Comparable<User> {
 
     private final static String EMAIL_FORM = "^[\\w-\\.]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,}$";
-    private final static String NO_DIGITS_REGS = "\\d+";
+    private final static String DIGITS_REGS = "\\d+";
     private final String name;
     private final String email;
     private final int age;
@@ -104,10 +104,26 @@ public class User implements Comparable<User> {
             }
         }
 
-        public static String cleanStringFromDigit(String string) {
-            string = string.replaceAll(NO_DIGITS_REGS, "").trim();
+        private static String cleanStringFromDigit(String string) {
+            string = string.replaceAll(DIGITS_REGS, "").trim();
             checkedStringOnEmpty(string, DIGITS);
             return string;
+        }
+
+        public static boolean isName(String name) {
+            String NAME = "Name";
+            checkedStringOnEmpty(name, NAME);
+            return name.equals(cleanStringFromDigit(name));
+        }
+
+        public static boolean isEmail(String email) {
+            String EMAIL = "email";
+            checkedStringOnEmpty(email, EMAIL);
+            return email.toLowerCase().matches(EMAIL_FORM);
+        }
+
+        public static boolean isAge(int age) {
+            return (age >= MIN_AGE && age <= MAX_AGE);
         }
     }
 }
