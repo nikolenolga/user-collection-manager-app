@@ -70,7 +70,7 @@ public class UserParser implements Parsing<User> {
     private User setArrayElementsForUserFields(String[] fields) {
         String name = null;
         String email = null;
-        Integer age = null;
+        int age = 0;
 
         for (String field : fields) {
             String trimmedField = field.trim();
@@ -84,7 +84,7 @@ public class UserParser implements Parsing<User> {
                     name = trimmedField;
                     continue;
                 }
-                if (age == null) {
+                if (age == 0) {
                     try {
                         int possibleAge = createdDigitFromFirstInteger(trimmedField);
                         if (isAge(possibleAge)) {
@@ -99,7 +99,7 @@ public class UserParser implements Parsing<User> {
             }
         }
 
-        if (name == null || email == null || age == null) {
+        if (name == null || email == null || age == 0) {
             throw new AppException(String.format(INPUT_ERROR_X, exampleEntity(name, email, age)));
         }
 
