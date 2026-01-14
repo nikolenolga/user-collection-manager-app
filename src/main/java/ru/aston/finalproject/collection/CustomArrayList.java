@@ -181,14 +181,14 @@ public class CustomArrayList<E> extends AbstractList<E>
         return true;
     }
 
-    private void copyCollectionElements(Collection<? extends E> c, Object[] destination, int destinedPosition) {
+    private void copyCollectionElements(Collection<? extends E> c, Object[] destination, int destPos) {
         if (c instanceof CustomArrayList) {
             CustomArrayList<?> sourceList = (CustomArrayList<?>) c;
-            System.arraycopy(sourceList.elementData, 0, destination, destinedPosition, sourceList.size);
+            System.arraycopy(sourceList.elementData, 0, destination, destPos, sourceList.size);
         } else {
-            int position = destinedPosition;
+            int pos = destPos;
             for (E element : c) {
-                destination[position++] = element;
+                destination[pos++] = element;
             }
         }
     }
