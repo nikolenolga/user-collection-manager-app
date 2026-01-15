@@ -1,10 +1,8 @@
-package ru.aston.finalproject.entity;
+package ru.aston.finalproject.entity.user;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import ru.aston.finalproject.entity.user.BuildUser;
-import ru.aston.finalproject.entity.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

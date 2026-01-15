@@ -1,9 +1,7 @@
-package ru.aston.finalproject.entity;
+package ru.aston.finalproject.entity.user;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import ru.aston.finalproject.entity.user.User;
-import ru.aston.finalproject.entity.user.UserDataFaker;
 
 import java.util.stream.Stream;
 
