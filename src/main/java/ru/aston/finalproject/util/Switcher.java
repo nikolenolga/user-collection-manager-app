@@ -73,7 +73,7 @@ public class Switcher {
                 System.out.println("Use the 'change' command to change the entity");
             } catch (IllegalArgumentException e) {
                 System.out.printf((Message.WRONG_REQUEST_SYNTAXES_X) + "%n", command);
-                printHelpCommand();
+                System.out.println("\n" + Message.COMMAND_FOR_HELP);
             }
         }
     }
@@ -95,9 +95,5 @@ public class Switcher {
         }
         System.out.println();
         System.out.print("Enter the name of the entity : ");
-    }
-
-    private void printHelpCommand() {
-        System.out.println("\nIf You don't know Commands. Write: help");
     }
 }

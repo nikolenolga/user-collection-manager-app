@@ -24,6 +24,7 @@ public class Message {
     public static final String INVALID_DATA_X = "Invalid data %s";
     public static final String INVALID_DATA = "Invalid data";
     public static final String ERROR_UNKNOWN_ENTITY_X = "Error: Unknown entity ' %s '";
+    public static final String COMMAND_FOR_HELP = "If You don't know Commands. Write: help";
 
     public static final String USER_CANNOT_BE_NULL = "User cannot be null";
     public static final String X_CANNOT_BE_EMPTY = "%s cannot be empty";
