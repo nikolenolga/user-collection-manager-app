@@ -40,8 +40,8 @@ public enum Action {
                     \t\t -value=<value> just value parameter
                     \t\t -floor=<value> -ceiling=<value> with both borders
                     \t\t (in value need write PE stock)"""),
-    change(" \t to change entity"),
-    exit(" \t to close the program");
+    change(null, " \t to change entity"),
+    exit(null, " \t to close the program");
 
     @Getter
     private final String info;
@@ -54,8 +54,4 @@ public enum Action {
         this.info = info;
     }
 
-    Action(String info) {
-        this.info = info;
-        appAction = null;
-    }
 }
