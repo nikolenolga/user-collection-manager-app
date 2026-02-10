@@ -67,10 +67,10 @@ public class Switcher {
                 AppAction appAction = Action.valueOf(command).getAppAction();
                 appAction.action(appData, appRequest);
             } catch (AppException exception) {
-                System.out.println("Error: " + exception.getMessage());
+                System.out.println(Message.ERROR + exception.getMessage());
             } catch (ClassCastException e) {
-                System.out.println("Error: This command is not supported for the current entity");
-                System.out.println("Use the 'change' command to change the entity");
+                System.out.println(Message.ERROR + Message.COMMAND_NOT_SUPPORTED_ENTITY);
+                System.out.println(Message.TO_CHANGE_ENTITY);
             } catch (IllegalArgumentException e) {
                 System.out.printf((Message.WRONG_REQUEST_SYNTAXES_X) + "%n", command);
                 System.out.println("\n" + Message.COMMAND_FOR_HELP);

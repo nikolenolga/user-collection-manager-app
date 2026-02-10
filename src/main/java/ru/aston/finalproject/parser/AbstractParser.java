@@ -2,8 +2,6 @@ package ru.aston.finalproject.parser;
 
 import ru.aston.finalproject.environment.AppException;
 
-import java.util.Arrays;
-
 import static ru.aston.finalproject.util.ConstantFields.SPACE;
 import static ru.aston.finalproject.util.ConstantMethods.checkedStringOnEmpty;
 import static ru.aston.finalproject.util.Message.DATA_AT_INDEX_X;
@@ -27,16 +25,15 @@ public abstract class AbstractParser<T> implements Parsing<T> {
     }
 
     protected int createdDigitFromFirstInteger(String stringWithDigit, String nameParameter) {
-        checkedStringContainDigitsOnly(stringWithDigit, nameParameter);
         try {
-            return Integer.parseInt(stringWithDigit.trim().split(SPACE)[0]);
+            return Integer.parseInt(stringDigitFromFirstInteger(stringWithDigit, nameParameter));
         } catch (NumberFormatException e) {
             throw new AppException(String.format(INVALID_DATA_X, stringWithDigit));
         }
     }
 
-    protected String createdDigitFromFirstInteger(String stringWithDigit) {
-        checkedStringContainDigitsOnly(stringWithDigit, "string");
+    protected String stringDigitFromFirstInteger(String stringWithDigit, String nameParameter) {
+        checkedStringContainDigitsOnly(stringWithDigit, nameParameter);
         return stringWithDigit.trim().split(SPACE)[0];
     }
 

@@ -4,14 +4,11 @@ public class Message {
     public static final String WRONG_REQUEST_PARAMETER_SYNTAXES_X = "Wrong request parameter syntaxes: %s";
     public static final String WRONG_REQUEST_PARAMETER_SYNTAXES = "Wrong request parameter syntaxes";
     public static final String WRONG_REQUEST_SYNTAXES_X = "Wrong request syntaxes: %s";
-    public static final String WRONG_CONSOLE_INPUT = "Wrong console input";
     public static final String WRONG_PARAMETERS_AMOUNT = "Wrong parameters amount";
     public static final String WRONG_PARAMETER_VALUE_X = "Wrong parameter value: %s=%s";
     public static final String WRONG_LOADER_KEY_X = "Wrong loader key: %s";
     public static final String ENTER_PARAMETER_VALUE_X = "Enter parameter value: %s=?";
     public static final String ENTER_PARAMETER_X = "Enter parameter: %s";
-    public static final String X_X_FOUND_IN_LIST = "%d %ss found in list";
-    public static final String FILE_NOT_FOUND_X = "File %s not found";
     public static final String LIST_NOT_LOADED = "List not loaded";
     public static final String EMPTY_REQUEST = "Empty request";
     public static final String FAILED_TO_CREATE_FILE_X = "Failed to create directory for file '%s'";
@@ -23,8 +20,11 @@ public class Message {
     public static final String INPUT_ERROR_X = "input error: %s";
     public static final String INVALID_DATA_X = "Invalid data %s";
     public static final String INVALID_DATA = "Invalid data";
-    public static final String ERROR_UNKNOWN_ENTITY_X = "Error: Unknown entity ' %s '";
+    public static final String ERROR = "Error: ";
+
+    public static final String COMMAND_NOT_SUPPORTED_ENTITY = "This command is not supported for the current entity";
     public static final String COMMAND_FOR_HELP = "If You don't know Commands. Write: help";
+    public static final String TO_CHANGE_ENTITY = "Use the 'change' command to change the entity";
 
     public static final String USER_CANNOT_BE_NULL = "User cannot be null";
     public static final String X_CANNOT_BE_EMPTY = "%s cannot be empty";
@@ -36,10 +36,8 @@ public class Message {
     public static final String ENTER_X_TO_INTERRUPT_CONSOLE_INPUT = "Enter '%s' to interrupt console input";
     public static final String CONSOLE_INPUT_INTERRUPTED = "Console input interrupted";
     public static final String DATA_AT_INDEX_X = "data at index %d";
-    public static final String USERS_LOADED = "Users loaded";
     public static final String X_ENTITIES_LOADED = "%d entities loaded";
     public static final String ENTITIES_SAVED = "Entities saved";
-    public static final String STOCKS_SAVED = "Stocks saved";
     public static final String ENTITIES_CLEARED = "Entities cleared";
     public static final String ENTITIES_SORTED = "Entities sorted";
     public static final String ENTITIES_FILTERED = "filter is completed";

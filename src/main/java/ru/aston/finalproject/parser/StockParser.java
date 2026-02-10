@@ -1,11 +1,8 @@
 package ru.aston.finalproject.parser;
 
 import ru.aston.finalproject.entity.stock.Stock;
-import ru.aston.finalproject.entity.validator.StockBuilderValidator;
 import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
-
-import java.math.BigDecimal;
 
 import static ru.aston.finalproject.util.ConstantMethods.checkedStringOnEmpty;
 import static ru.aston.finalproject.util.Message.X_CANNOT_BE_EMPTY;
@@ -36,22 +33,9 @@ public class StockParser extends AbstractParser<Stock> {
         if (stock == null) {
             throw new AppException(String.format(X_CANNOT_BE_EMPTY, "Stock"));
         }
-        return exampleStock(
-                stock.getName(), stock.getNowValue(),
-                stock.getMaxValue(), stock.getMinValue(),
-                stock.isDividends(), stock.getPe(), stock.getEps(),
-                stock.getEpsFrom5Years(), stock.isBuyInThisPeriod()
-        );
-    }
-
-    private String exampleStock(String name, BigDecimal nowValue,
-                                BigDecimal maxValue, BigDecimal minValue,
-                                boolean dividends, BigDecimal pe, BigDecimal eps,
-                                BigDecimal epsFrom5Years, boolean buyInThisPeriod) {
-
-        return name + " " + nowValue + " " + maxValue
-                + " " + minValue + " " + dividends + " " + "pe" + pe + " "
-                + "eps" + eps + " " + epsFrom5Years + " " + buyInThisPeriod;
+        return stock.getName() + stock.getNowValue() + stock.getMaxValue() + stock.getMinValue() +
+                stock.isDividends() + stock.getPe() + stock.getEps() + stock.getEpsFrom5Years() +
+                stock.isBuyInThisPeriod();
     }
 
     @Override
@@ -66,13 +50,14 @@ public class StockParser extends AbstractParser<Stock> {
         String[] dataArray = preparingForParsing(data, delimiter, LENGTH_PARAMETER);
         dataArray = replaceToDot(dataArray);
         String name = dataArray[NAME_PARAMETER];
-        String nowValue = createdDigitFromFirstInteger(dataArray[NOW_VALUE_PARAMETER]);
-        String maxValue = createdDigitFromFirstInteger(dataArray[MAX_VALUE_PARAMETER]);
-        String minValue = createdDigitFromFirstInteger(dataArray[MIN_VALUE_PARAMETER]);
+        String nowValue = stringDigitFromFirstInteger(dataArray[NOW_VALUE_PARAMETER], "nowValue");
+        String maxValue = stringDigitFromFirstInteger(dataArray[MAX_VALUE_PARAMETER], "maxValue");
+        String minValue = stringDigitFromFirstInteger(dataArray[MIN_VALUE_PARAMETER], "minValue");
         String dividends = dataArray[DIVIDENDS_PARAMETER];
-        String pe = createdDigitFromFirstInteger(dataArray[PE_PARAMETER].substring(2));
-        String eps = createdDigitFromFirstInteger(dataArray[EPS_PARAMETER].substring(3));
-        String epsFrom5Years = createdDigitFromFirstInteger(dataArray[EPS_FROM_5_YEARS_PARAMETER]);
+        String pe = stringDigitFromFirstInteger(dataArray[PE_PARAMETER].substring(2), "PE");
+        String eps = stringDigitFromFirstInteger(dataArray[EPS_PARAMETER].substring(3), "EPS");
+        String epsFrom5Years =
+                stringDigitFromFirstInteger(dataArray[EPS_FROM_5_YEARS_PARAMETER], "epsFrom5Years");
         String buyInThisPeriod = dataArray[BUY_IN_THIS_PERIOD_PARAMETER];
 
         return Stock.builder().setName(name).setNowValue(nowValue).setMaxValue(maxValue).setMinValue(minValue)
