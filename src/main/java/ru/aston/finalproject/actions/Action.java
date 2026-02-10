@@ -27,11 +27,11 @@ public enum Action {
                     \t count entries of a given user
                     \t\t -threads=<tread count> \t thread count for multithread search
                     \t\t (set at 1 for sequential search)"""),
-    sort(new UserSortingAction(),
+    sort(new SortingAction(),
             """
                     \t sorting current list to file
                     \t\t -basic \t\t\t\t\t natural order sorting for user and stock
-                    \t\t -strange \t\t\t\t\t sorting only by even age user"""),
+                    \t\t -user \t\t\t\t\t sorting only by even age user"""),
     filter(new RemovePartsOfStockAction(),
             """
                      \t remove stocks from list after filters
