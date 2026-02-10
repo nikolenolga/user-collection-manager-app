@@ -27,7 +27,7 @@ public enum Action {
                     \t count entries of a given user
                     \t\t -threads=<tread count> \t thread count for multithread search
                     \t\t (set at 1 for sequential search)"""),
-    sort(new SortingAction(),
+    sort(new SortingAction<>(),
             """
                     \t sorting current list to file
                     \t\t -basic \t\t\t\t\t natural order sorting for user and stock
