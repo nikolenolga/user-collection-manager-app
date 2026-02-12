@@ -22,7 +22,6 @@ public class LoadStockFromExcel implements DataLoader<Stock> {
         String filePath = request.getStringParameter(FILE_PATH_PARAMETER);
         ReadFromExcel readFromExcel = new ReadFromExcel(validate);
 
-
         return readFromExcel.readXlsStocks(filePath).stream();
     }
 }
