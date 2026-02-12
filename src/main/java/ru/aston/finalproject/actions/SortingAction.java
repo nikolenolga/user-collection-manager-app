@@ -43,7 +43,6 @@ public class SortingAction<T extends Comparable<T>> extends AppAction<T> {
             ((UserAppData)appData).setEntityList(userList);
         }
 
-
         System.out.println(Message.ENTITIES_SORTED);
     }
 }

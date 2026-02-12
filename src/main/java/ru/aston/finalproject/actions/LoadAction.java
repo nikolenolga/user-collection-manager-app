@@ -25,6 +25,6 @@ public class LoadAction<T> extends AppAction<T> {
 
         appData.getEntityList().addAll(entities);
 
-        System.out.println(Message.X_ENTITIES_LOADED.formatted(entities.size()));
+        System.out.printf((Message.X_ENTITIES_LOADED) + "%n", entities.size());
     }
 }

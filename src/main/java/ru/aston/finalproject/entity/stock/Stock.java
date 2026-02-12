@@ -47,7 +47,7 @@ public class Stock implements Comparable<Stock> {
     @Override
     public String toString() {
         return name + "\n"
-                + "   PE   =   " + pe + "\n"
+                + "     PE     = " + pe + "\n"
                 + " 52 w High  = " + maxValue + "\n"
                 + "  --> Nov   = " + nowValue + " (" + nowValueInPercent + "%)" + "\n"
                 + "grahamPrice = " + grahamPrice + "\n"

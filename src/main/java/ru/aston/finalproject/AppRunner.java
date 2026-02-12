@@ -31,6 +31,7 @@ public class AppRunner {
                 }
             } catch (IllegalStateException e) {
                 System.out.println(e.getMessage());
+//                e.printStackTrace();
             }
         }
     }

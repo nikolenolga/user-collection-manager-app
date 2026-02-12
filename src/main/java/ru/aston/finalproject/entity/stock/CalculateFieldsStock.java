@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 public class CalculateFieldsStock {
 
-    private static final BigDecimal hundred = new BigDecimal("100");
+    private static final BigDecimal hundredPercent = new BigDecimal("100");
 
     public static BigDecimal nowPercent(Stock stock) {
         BigDecimal result = stock.getMaxValue().subtract(stock.getMinValue());
         BigDecimal nowResult = stock.getNowValue().subtract(stock.getMinValue());
-        return nowResult.multiply(hundred).divide(result, 2, java.math.RoundingMode.HALF_UP);
+        return nowResult.multiply(hundredPercent).divide(result, 2, java.math.RoundingMode.HALF_UP);
     }
 
     public static BigDecimal setGrahamPrice(Stock stock) {
@@ -26,27 +26,37 @@ public class CalculateFieldsStock {
         BigDecimal one = BigDecimal.ONE;
         BigDecimal two = new BigDecimal("2");
 
-        BigDecimal conservativeG = getConservativeG(stock, one, oneFromFiveYears);
-        BigDecimal bracketValue = getBracketValue(grahamConstant, two, conservativeG);
+        BigDecimal conservativeGrowthRate = getConservativeGrowthRate(stock, one, oneFromFiveYears);
+        BigDecimal bracketValue = getBracketValue(grahamConstant, two, conservativeGrowthRate);
         BigDecimal numerator = stock.getEps().multiply(bracketValue);
         BigDecimal denominator = one.add(riskFreeRate);
         return (numerator).divide(denominator, 2, java.math.RoundingMode.HALF_UP);
     }
 
-    private static BigDecimal getConservativeG(Stock stock, BigDecimal one, BigDecimal oneFromFiveYears) {
-        BigDecimal fifteen = new BigDecimal("15");
+    private static BigDecimal getConservativeGrowthRate(
+            Stock stock, BigDecimal one, BigDecimal oneFromFiveYears) {
+
+        BigDecimal maximumAllowedValue = new BigDecimal("15");
+
         BigDecimal growthFactor =
-                (stock.getEpsFrom5Years().divide(hundred, 10, java.math.RoundingMode.HALF_UP))
-                        .add(one);
+                stock.getEps().divide(stock.getEpsFrom5Years(), 10, java.math.RoundingMode.HALF_UP);
+
         double compoundAnnualGrowthRateDouble = Math.pow(
-                growthFactor.doubleValue(), oneFromFiveYears.doubleValue()) - 1;
-        BigDecimal compoundAnnualGrowthRate = new BigDecimal(compoundAnnualGrowthRateDouble);
-        BigDecimal compoundAnnualGrowthRatePercent = compoundAnnualGrowthRate.multiply(hundred);
-        return compoundAnnualGrowthRatePercent.min(fifteen);
+                growthFactor.doubleValue(), oneFromFiveYears.doubleValue()) - one.doubleValue();
+
+        if (compoundAnnualGrowthRateDouble > 0) {
+            BigDecimal compoundAnnualGrowthRate = new BigDecimal(compoundAnnualGrowthRateDouble);
+            BigDecimal compoundAnnualGrowthRatePercent = compoundAnnualGrowthRate.multiply(hundredPercent);
+            return compoundAnnualGrowthRatePercent.min(maximumAllowedValue);
+        } else {
+            return new BigDecimal(0);
+        }
     }
 
-    private static BigDecimal getBracketValue(BigDecimal grahamConstant, BigDecimal two, BigDecimal conservativeG) {
-        BigDecimal multiply = two.multiply(conservativeG);
+    private static BigDecimal getBracketValue(
+            BigDecimal grahamConstant, BigDecimal two, BigDecimal conservativeGrowthRate) {
+
+        BigDecimal multiply = two.multiply(conservativeGrowthRate);
         return grahamConstant.add(multiply);
     }
 
