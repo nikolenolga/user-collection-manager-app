@@ -1,12 +1,10 @@
 package ru.aston.finalproject.parser;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.aston.finalproject.collection.CustomArrayList;
 import ru.aston.finalproject.entity.stock.Stock;
-import ru.aston.finalproject.entity.validator.StockBuilderValidator;
 import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
 import ru.aston.finalproject.util.Message;
@@ -17,23 +15,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class ReadFromExcel {
+public class ReadStockFromExcel {
 
     private final Validate<Stock.Builder> stockValidator;
     private final String nowSpace = "";
 
-    public ReadFromExcel(Validate<Stock.Builder> stockValidator) {
+    public ReadStockFromExcel(Validate<Stock.Builder> stockValidator) {
         this.stockValidator = stockValidator;
     }
 
-    public List<Stock> readXlsStocks(String filePath) {
+    public List<Stock> creatListStocks(String filePath, String nameSheet) {
 
         List<Stock> stockLists = new CustomArrayList<>();
 
         try (FileInputStream inputStream = new FileInputStream(filePath);
              XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
 
-            XSSFSheet sheet = workbook.getSheet("stocks");
+            XSSFSheet sheet = workbook.getSheet(nameSheet);
             Iterator<Row> rows = sheet.iterator();
             rows.next();
 

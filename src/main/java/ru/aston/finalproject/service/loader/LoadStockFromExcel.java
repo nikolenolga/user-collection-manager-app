@@ -3,7 +3,7 @@ package ru.aston.finalproject.service.loader;
 import ru.aston.finalproject.entity.stock.Stock;
 import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppRequest;
-import ru.aston.finalproject.parser.ReadFromExcel;
+import ru.aston.finalproject.parser.ReadStockFromExcel;
 
 import java.util.stream.Stream;
 
@@ -20,8 +20,8 @@ public class LoadStockFromExcel implements DataLoader<Stock> {
     public Stream<Stock> loadEntityList(Integer size, AppRequest request) {
 
         String filePath = request.getStringParameter(FILE_PATH_PARAMETER);
-        ReadFromExcel readFromExcel = new ReadFromExcel(validate);
+        ReadStockFromExcel readFromExcel = new ReadStockFromExcel(validate);
 
-        return readFromExcel.readXlsStocks(filePath).stream();
+        return readFromExcel.creatListStocks(filePath, "stocks").stream().limit(size);
     }
 }
