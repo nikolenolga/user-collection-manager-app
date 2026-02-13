@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
 import ru.aston.finalproject.environment.AppRequest;
 import ru.aston.finalproject.entity.user.User;
 import ru.aston.finalproject.parser.UserParser;
@@ -37,7 +38,7 @@ class ConsoleDataLoaderTest {
                 .setAge(3)
                 .setEmail("test@mail.ru")
                 .setName("Name")
-                .build();
+                .build(new UserBuilderValidator());
         validConsoleInputStream = Stream.generate(() -> "Name test@mail.ru 3");
     }
 

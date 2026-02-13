@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static ru.aston.finalproject.util.ConstantMethods.checkedStringOnEmpty;
 
-public class FileWriter<T> {
+public class FileWriter<T> implements Writer<T> {
 
     private static final int FLUSH_THRESHOLD = 1000;
     private static final String LINE_SEPARATOR = System.lineSeparator();

@@ -1,8 +1,10 @@
-package ru.aston.finalproject.entity;
+package ru.aston.finalproject.entity.user;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import ru.aston.finalproject.entity.user.User;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
+import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
 
 import java.util.Arrays;
@@ -18,6 +20,13 @@ import static ru.aston.finalproject.util.ConstantFields.MIN_AGE;
 
 public class UserTest {
 
+    private Validate<User.Builder> validate;
+
+    @BeforeEach
+    void setUp() {
+        validate = new UserBuilderValidator();
+    }
+
     @Nested
     class UserCreationTests {
 
@@ -27,7 +36,7 @@ public class UserTest {
                     .setName("Ivan")
                     .setEmail("email@mail.ru")
                     .setAge(20)
-                    .build();
+                    .build(validate);
 
             assertNotNull(user);
             assertEquals("Ivan", user.getName());
@@ -45,7 +54,7 @@ public class UserTest {
                     User.builder()
                             .setEmail("email@mail.ru")
                             .setAge(20)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("cannot be empty"));
         }
@@ -57,7 +66,7 @@ public class UserTest {
                             .setName("")
                             .setEmail("email@mail.ru")
                             .setAge(20)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("cannot be empty"));
         }
@@ -70,7 +79,7 @@ public class UserTest {
                             .setName(invalidName)
                             .setEmail("email@mail.ru")
                             .setAge(20)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("not a valid Name"));
         }
@@ -85,7 +94,7 @@ public class UserTest {
                     User.builder()
                             .setName("Ivan")
                             .setAge(20)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("cannot be empty"));
         }
@@ -98,7 +107,7 @@ public class UserTest {
                             .setName("Ivan")
                             .setEmail(invalidEmail)
                             .setAge(20)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("not a valid"));
         }
@@ -115,7 +124,7 @@ public class UserTest {
                             .setName("Ivan")
                             .setEmail("email@mail.ru")
                             .setAge(invalidAge)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("should be between"));
             assertTrue(exception.getMessage().contains(String.valueOf(invalidAge)));
@@ -129,7 +138,7 @@ public class UserTest {
                             .setName("Ivan")
                             .setEmail("email@mail.ru")
                             .setAge(invalidAge)
-                            .build()
+                            .build(validate)
             );
             assertTrue(exception.getMessage().contains("should be between"));
             assertTrue(exception.getMessage().contains(String.valueOf(invalidAge)));
@@ -145,7 +154,7 @@ public class UserTest {
                     .setName("Ivan")
                     .setEmail("email@mail.ru")
                     .setAge(20)
-                    .build();
+                    .build(validate);
             String result = user.toString();
             assertTrue(result.contains("Ivan"));
             assertTrue(result.contains("email@mail.ru"));
@@ -158,8 +167,8 @@ public class UserTest {
 
         @Test
         void givenTwoUsersWithDifferentNames_whenSort_thenSortedByName() {
-            User ivan = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(25).build();
-            User anna = User.builder().setName("Anna").setEmail("b@mail.ru").setAge(30).build();
+            User ivan = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(25).build(validate);
+            User anna = User.builder().setName("Anna").setEmail("b@mail.ru").setAge(30).build(validate);
             List<User> users = Arrays.asList(ivan, anna);
             Collections.sort(users);
             assertEquals("Anna", users.get(0).getName());
@@ -168,8 +177,8 @@ public class UserTest {
 
         @Test
         void givenTwoUsersWithSameNameDifferentEmails_whenSort_thenSortedByEmail() {
-            User user1 = User.builder().setName("Ivan").setEmail("b@mail.ru").setAge(25).build();
-            User user2 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(30).build();
+            User user1 = User.builder().setName("Ivan").setEmail("b@mail.ru").setAge(25).build(validate);
+            User user2 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(30).build(validate);
             List<User> users = Arrays.asList(user1, user2);
             Collections.sort(users);
             assertEquals("a@mail.ru", users.get(0).getEmail());
@@ -178,8 +187,8 @@ public class UserTest {
 
         @Test
         void givenTwoUsersWithSameNameAndEmailDifferentAges_whenSort_thenSortedByAge() {
-            User user1 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(30).build();
-            User user2 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(25).build();
+            User user1 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(30).build(validate);
+            User user2 = User.builder().setName("Ivan").setEmail("a@mail.ru").setAge(25).build(validate);
             List<User> users = Arrays.asList(user1, user2);
             Collections.sort(users);
             assertEquals(25, users.get(0).getAge());

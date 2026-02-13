@@ -1,10 +1,10 @@
-package ru.aston.finalproject.entity;
+package ru.aston.finalproject.entity.user;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import ru.aston.finalproject.entity.user.BuildUser;
-import ru.aston.finalproject.entity.user.User;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
+import ru.aston.finalproject.entity.validator.Validate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,7 +16,8 @@ public class BuildUserTest {
 
     @BeforeEach
     public void setUp() {
-        buildUser = new BuildUser();
+        Validate<User.Builder> validate = new UserBuilderValidator();
+        buildUser = new BuildUser(validate);
     }
 
     @Nested

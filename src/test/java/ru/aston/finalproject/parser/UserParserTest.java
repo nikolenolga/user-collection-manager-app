@@ -3,6 +3,8 @@ package ru.aston.finalproject.parser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
+import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
 import ru.aston.finalproject.entity.user.User;
 
@@ -16,10 +18,12 @@ import static ru.aston.finalproject.util.ConstantFields.MIN_AGE;
 public class UserParserTest {
 
     private Parsing<User> userParser;
+    private Validate<User.Builder> validate;
 
     @BeforeEach
     void setUp() {
-        userParser = new UserParser();
+        validate = new UserBuilderValidator();
+        userParser = new UserParser(validate);
     }
 
     @Nested
@@ -31,7 +35,7 @@ public class UserParserTest {
                     .setName("Anna")
                     .setEmail("anna@example.com")
                     .setAge(30)
-                    .build();
+                    .build(validate);
             String result = userParser.parseToString(user);
             assertEquals("Anna : anna@example.com : 30", result);
         }
@@ -42,7 +46,7 @@ public class UserParserTest {
                     .setName("Test")
                     .setEmail("test@example.com")
                     .setAge(MIN_AGE)
-                    .build();
+                    .build(validate);
             String result = userParser.parseToString(user);
             assertEquals("Test : test@example.com : 1", result);
         }
@@ -53,7 +57,7 @@ public class UserParserTest {
                     .setName("Test")
                     .setEmail("test@example.com")
                     .setAge(MAX_AGE)
-                    .build();
+                    .build(validate);
             String result = userParser.parseToString(user);
             assertEquals("Test : test@example.com : 120", result);
         }
@@ -64,7 +68,7 @@ public class UserParserTest {
                     .setName("Anna Maria")
                     .setEmail("anna@example.com")
                     .setAge(30)
-                    .build();
+                    .build(validate);
             String result = userParser.parseToString(user);
             assertEquals("Anna Maria : anna@example.com : 30", result);
         }
@@ -237,7 +241,7 @@ public class UserParserTest {
                     .setName("Ivan")
                     .setEmail("ivan@example.com")
                     .setAge(25)
-                    .build();
+                    .build(validate);
             String serialized = userParser.parseToString(originalUser);
             User deserialized = userParser.parse(serialized);
             assertEquals(originalUser.getName(), deserialized.getName());

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
 import ru.aston.finalproject.environment.AppRequest;
 import ru.aston.finalproject.entity.user.BuildUser;
 import ru.aston.finalproject.entity.user.User;
@@ -40,7 +41,7 @@ class RandomUserDataLoaderTest {
                 .setAge(3)
                 .setEmail("test-email@gmail.com")
                 .setName("Name")
-                .build();
+                .build(new UserBuilderValidator());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package ru.aston.finalproject.service.loader;
 
-import lombok.AllArgsConstructor;
 import ru.aston.finalproject.collection.CustomArrayList;
 import ru.aston.finalproject.environment.AppException;
 import ru.aston.finalproject.environment.AppRequest;
@@ -17,10 +16,12 @@ import java.util.stream.Stream;
 
 import static ru.aston.finalproject.parser.UserParser.USER_FORMAT;
 
-@AllArgsConstructor
-public class ConsoleDataLoader<T> implements DataLoader<T> {
+public class ConsoleDataLoader<T> extends AbstractLoaderWithParser<T> {
     public static final String STOP_CONSOLE_LOADER_COMMAND = "q";
-    private final Parsing<T> parser;
+
+    public ConsoleDataLoader(Parsing<T> parser) {
+        super(parser);
+    }
 
     @Override
     public Stream<T> loadEntityList(Integer size, AppRequest request) {
@@ -38,16 +39,6 @@ public class ConsoleDataLoader<T> implements DataLoader<T> {
 
         } catch (UncheckedIOException | NoSuchElementException e) {
             throw new AppException(Message.CONSOLE_INPUT_FAILED);
-        }
-    }
-
-    private T parseEntity(String line) {
-        try {
-            return parser.parse(line);
-        } catch (AppException e) {
-            System.out.println(e.getMessage());
-            System.out.println(Message.ENTER_USERS_EXPECTED_FORMAT_S.formatted(USER_FORMAT));
-            return null;
         }
     }
 

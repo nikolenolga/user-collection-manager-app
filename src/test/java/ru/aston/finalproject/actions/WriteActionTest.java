@@ -5,11 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ru.aston.finalproject.environment.AppData;
-import ru.aston.finalproject.environment.AppException;
-import ru.aston.finalproject.environment.AppRequest;
 import ru.aston.finalproject.collection.CustomArrayList;
 import ru.aston.finalproject.entity.user.User;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
+import ru.aston.finalproject.entity.validator.Validate;
+import ru.aston.finalproject.environment.AppException;
+import ru.aston.finalproject.environment.AppRequest;
+import ru.aston.finalproject.environment.appdata.AppData;
 import ru.aston.finalproject.service.writer.FileWriter;
 import ru.aston.finalproject.util.Message;
 
@@ -35,6 +37,7 @@ public class WriteActionTest {
     private ByteArrayOutputStream outputStream;
     private PrintStream originalOut;
     private AutoCloseable mockitoCloseable;
+    private Validate<User.Builder> validate;
 
     @Mock
     private AppData mockAppData;
@@ -48,19 +51,20 @@ public class WriteActionTest {
     @BeforeEach
     void setUp() {
         mockitoCloseable = MockitoAnnotations.openMocks(this);
-        writeAction = new WriteAction();
+        writeAction = new WriteAction<>();
         userList = new CustomArrayList<>();
         outputStream = new ByteArrayOutputStream();
+        validate = new UserBuilderValidator();
         originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
     }
 
     @Test
     void givenValidParametersAndNonEmptyUserList_whenAction_thenWriteUsersToFileAndPrintSuccessMessage() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
-        userList.add(User.builder().setName("Anna").setEmail("anna@mail.ru").setAge(30).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
+        userList.add(User.builder().setName("Anna").setEmail("anna@mail.ru").setAge(30).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -71,13 +75,13 @@ public class WriteActionTest {
         verify(mockFileWriter).write(userList, "output.txt");
 
         String output = outputStream.toString().trim();
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
         assertFalse(output.contains(Message.LIST_NOT_LOADED));
     }
 
     @Test
     void givenValidParametersAndEmptyUserList_whenAction_thenPrintWarningMessageAndStillWriteToFile() throws AppException {
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -89,12 +93,12 @@ public class WriteActionTest {
 
         String output = outputStream.toString().trim();
         assertTrue(output.contains(Message.LIST_NOT_LOADED));
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
     }
 
     @Test
     void givenValidParametersAndNullUserList_whenAction_thenPrintWarningMessageAndStillWriteToFile() throws AppException {
-        when(mockAppData.getUserList()).thenReturn(null);
+        when(mockAppData.getEntityList()).thenReturn(null);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -106,7 +110,7 @@ public class WriteActionTest {
 
         String output = outputStream.toString().trim();
         assertTrue(output.contains(Message.LIST_NOT_LOADED));
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
     }
 
     @Test
@@ -120,16 +124,16 @@ public class WriteActionTest {
         assertEquals("Invalid parameters amount", exception.getMessage());
         verify(mockAppRequest).checkParametersAmount(1);
         verify(mockAppRequest, never()).getStringParameter(anyString());
-        verify(mockAppData, never()).getUserList();
+        verify(mockAppData, never()).getEntityList();
         verify(mockAppData, never()).getFileWriter();
         verify(mockFileWriter, never()).write(any(), anyString());
     }
 
     @Test
     void givenValidParametersAndFileWriterThrowsException_whenAction_thenExceptionPropagated() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -145,15 +149,15 @@ public class WriteActionTest {
         verify(mockFileWriter).write(userList, "output.txt");
 
         String output = outputStream.toString().trim();
-        assertFalse(output.contains(Message.USERS_SAVED));
+        assertFalse(output.contains(Message.ENTITIES_SAVED));
         assertFalse(output.contains(Message.LIST_NOT_LOADED));
     }
 
     @Test
     void givenValidParametersAndEmptyFilePath_whenAction_thenFileWriterReceivesEmptyPath() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("");
 
@@ -162,14 +166,14 @@ public class WriteActionTest {
         verify(mockFileWriter).write(userList, "");
 
         String output = outputStream.toString().trim();
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
     }
 
     @Test
     void givenValidParametersAndNullFilePath_whenAction_thenFileWriterReceivesNullPath() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn(null);
 
@@ -178,14 +182,14 @@ public class WriteActionTest {
         verify(mockFileWriter).write(userList, null);
 
         String output = outputStream.toString().trim();
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
     }
 
     @Test
     void givenValidParametersAndSingleUserInList_whenAction_thenWriteCalledWithSingleUser() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -195,16 +199,16 @@ public class WriteActionTest {
         assertEquals(1, userList.size());
 
         String output = outputStream.toString().trim();
-        assertTrue(output.contains(Message.USERS_SAVED));
+        assertTrue(output.contains(Message.ENTITIES_SAVED));
         assertFalse(output.contains(Message.LIST_NOT_LOADED));
     }
 
     @Test
     void givenValidParametersAndMultipleCalls_whenActionCalledMultipleTimes_thenFileWriterCalledMultipleTimes() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
-        userList.add(User.builder().setName("Anna").setEmail("anna@mail.ru").setAge(30).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
+        userList.add(User.builder().setName("Anna").setEmail("anna@mail.ru").setAge(30).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -219,9 +223,9 @@ public class WriteActionTest {
 
     @Test
     void givenValidParameters_whenAction_thenCorrectParameterNameUsed() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
@@ -237,9 +241,9 @@ public class WriteActionTest {
         WriteAction writeAction1 = new WriteAction();
         WriteAction writeAction2 = new WriteAction();
 
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output1.txt", "output2.txt");
 
@@ -252,16 +256,16 @@ public class WriteActionTest {
 
     @Test
     void givenValidParametersAndFileWriterReturns_whenAction_thenSuccessMessagePrinted() throws AppException {
-        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build());
+        userList.add(User.builder().setName("Ivan").setEmail("ivan@mail.ru").setAge(25).build(validate));
 
-        when(mockAppData.getUserList()).thenReturn(userList);
+        when(mockAppData.getEntityList()).thenReturn(userList);
         when(mockAppData.getFileWriter()).thenReturn(mockFileWriter);
         when(mockAppRequest.getStringParameter("-file")).thenReturn("output.txt");
 
         writeAction.action(mockAppData, mockAppRequest);
 
         String output = outputStream.toString().trim();
-        assertTrue(output.endsWith(Message.USERS_SAVED));
+        assertTrue(output.endsWith(Message.ENTITIES_SAVED));
     }
 
     @AfterEach

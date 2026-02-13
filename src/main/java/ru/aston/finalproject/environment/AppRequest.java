@@ -13,6 +13,7 @@ import java.util.Set;
 public class AppRequest {
     private static final String PARAMETERS_SPLITERATOR = "=";
     private static final String REQUEST_PARTS_SPLITERATOR = "\s+";
+    private static final String CHANGE_ENTITY = "change";
     private static final Set<String> exitWords = Set.of("exit", "^Z");
     private final Map<String, String> parameters = new HashMap<>();
     private String commandName;
@@ -78,6 +79,16 @@ public class AppRequest {
         }
     }
 
+    public Double getDoubleParameter(String parameterKey) {
+        String parameterValue = getStringParameter(parameterKey);
+
+        try {
+            return Double.parseDouble(parameterValue);
+        } catch (NumberFormatException e) {
+            throw new AppException(Message.WRONG_PARAMETER_VALUE_X.formatted(parameterKey, parameterValue));
+        }
+    }
+
     public boolean containsParameter(String parameterKey) {
         return parameters.containsKey(parameterKey);
     }
@@ -88,7 +99,15 @@ public class AppRequest {
         }
     }
 
+    public int getSizeParameters() {
+        return parameters.size();
+    }
+
     public boolean isExitRequest() {
         return exitWords.contains(commandName);
+    }
+
+    public boolean isChangeEntityRequest() {
+        return CHANGE_ENTITY.equals(commandName);
     }
 }

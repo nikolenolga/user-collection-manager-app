@@ -1,23 +1,23 @@
 package ru.aston.finalproject.parser;
 
+import lombok.AllArgsConstructor;
 import ru.aston.finalproject.entity.user.BuildUser;
 import ru.aston.finalproject.entity.user.User;
+import ru.aston.finalproject.entity.validator.UserBuilderValidator;
+import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
 
-import static ru.aston.finalproject.util.ConstantFields.SPACE;
 import static ru.aston.finalproject.util.ConstantMethods.checkedStringOnEmpty;
-import static ru.aston.finalproject.util.Message.DATA_AT_INDEX_X;
-import static ru.aston.finalproject.util.Message.INVALID_DATA_X;
 import static ru.aston.finalproject.util.Message.USER_CANNOT_BE_NULL;
-import static ru.aston.finalproject.util.Message.X_IS_NOT_A_VALID_X;
 
-public class UserParser implements Parsing<User> {
+@AllArgsConstructor
+public class UserParser extends AbstractParser<User> {
 
-    private static final String NO_DIGITS_REGS = "\\D+";
+    private static final String AGE = "age";
     private static final String DELIMITER = " : ";
     public static final String USER_FORMAT = String.format("name%semail%sage", DELIMITER, DELIMITER);
-    private static final String AGE = "age";
     private static final int LENGTH_PARAMETER = 3;
+    private final Validate<User.Builder> validator;
 
     @Override
     public String parseToString(User user) {
@@ -41,42 +41,14 @@ public class UserParser implements Parsing<User> {
 
         checkedStringOnEmpty(data, "data in parser");
 
-        BuildUser buildConcreteEntity = new BuildUser();
-        String[] dataArray = preparingForParsing(data, delimiter);
+        BuildUser buildConcreteEntity = new BuildUser(validator);
+        String[] dataArray = preparingForParsing(data, delimiter, LENGTH_PARAMETER);
 
         String name = dataArray[0].trim();
         String email = dataArray[1].trim();
-        int age = createdDigitFromFirstInteger(dataArray[2].trim());
+        int age = createdDigitFromFirstInteger(dataArray[2].trim(), AGE);
 
         return buildConcreteEntity.capitalizeNameAndNormalizedEmail(name, email, age);
     }
 
-    private String[] preparingForParsing(String data, String delimiter) {
-        String[] dataArray = data.split(delimiter);
-
-        if (dataArray.length != LENGTH_PARAMETER) {
-            throw new AppException(String.format(INVALID_DATA_X, data));
-        }
-        for (int i = 0; i < LENGTH_PARAMETER; i++) {
-            checkedStringOnEmpty(dataArray[i], String.format(DATA_AT_INDEX_X, i));
-        }
-        return dataArray;
-    }
-
-    private int createdDigitFromFirstInteger(String string) {
-        checkedStringContainDigitsOnly(string);
-        try {
-            return Integer.parseInt(string.trim().split(SPACE)[0]);
-        } catch (NumberFormatException e) {
-            throw new AppException(String.format(INVALID_DATA_X, string));
-        }
-    }
-
-    private void checkedStringContainDigitsOnly(String string) {
-        checkedStringOnEmpty(string, AGE);
-        String onlyDigits = string.replaceAll(NO_DIGITS_REGS, "").trim();
-        if (onlyDigits.trim().isEmpty()) {
-            throw new AppException(String.format(X_IS_NOT_A_VALID_X, string, AGE));
-        }
-    }
 }
