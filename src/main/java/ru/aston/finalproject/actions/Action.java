@@ -11,7 +11,7 @@ public enum Action {
                     \t load stock ore user list
                     \t\t -size=<size> -type=file \t -path=<path-to-file> \t load from file path
                     \t\t -size=<size> -type=console \t\t\t\t\t\t load from console input
-                    \t\t -size=<size> -type=excel \t -xlsx=<path-to-file> \t load from excel file
+                    \t\t -size=<size> -type=excel \t -path=<path-to-file> \t load from excel file (sheet has named stocks)
                     \t\t -size=<size> -type=random \t\t\t\t\t\t\t load random user list"""),
     write(new WriteAction<>(),
             """
