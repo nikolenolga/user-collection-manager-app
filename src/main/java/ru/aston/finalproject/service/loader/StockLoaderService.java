@@ -9,7 +9,7 @@ public class StockLoaderService extends LoaderService<Stock> {
 
     public StockLoaderService(FileDataLoader<Stock> stockFileDataLoader,
                               ConsoleDataLoader<Stock> stockConsoleDataLoader,
-                              LoadStockFromExcel loadStockFromExcel) {
+                              LoadFromExcel<Stock> loadStockFromExcel) {
         addLoader(LOAD_FROM_FILE, stockFileDataLoader);
         addLoader(LOAD_FROM_CONSOLE, stockConsoleDataLoader);
         addLoader(LOAD_FROM_EXCEL, loadStockFromExcel);
