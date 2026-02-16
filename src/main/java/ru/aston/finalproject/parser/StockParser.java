@@ -34,7 +34,7 @@ public class StockParser extends AbstractParser<Stock> {
             throw new AppException(String.format(X_CANNOT_BE_EMPTY, "Stock"));
         }
         return stock.getName() + " " + stock.getNowValue() + " " + stock.getMaxValue() + " " + stock.getMinValue() +
-                " " + stock.isDividends() + " " + stock.getPe() + " " + stock.getEps() + " " +
+                " " + stock.isDividends() + " pe" + stock.getPe() + " eps" + stock.getEps() + " " +
                 stock.getEpsFrom5Years() + " " + stock.isBuyInThisPeriod();
     }
 
