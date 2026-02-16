@@ -23,13 +23,13 @@ public class CalculateFieldsStock {
         BigDecimal grahamConstant = new BigDecimal("8.5");
         BigDecimal riskFreeRate = new BigDecimal("0.12");
         BigDecimal oneFromFiveYears = new BigDecimal("0.2");
-        BigDecimal one = BigDecimal.ONE;
-        BigDecimal two = new BigDecimal("2");
+        BigDecimal constantWithOne = BigDecimal.ONE;
+        BigDecimal constantWithTwo = new BigDecimal("2");
 
-        BigDecimal conservativeGrowthRate = getConservativeGrowthRate(stock, one, oneFromFiveYears);
-        BigDecimal bracketValue = getBracketValue(grahamConstant, two, conservativeGrowthRate);
+        BigDecimal conservativeGrowthRate = getConservativeGrowthRate(stock, constantWithOne, oneFromFiveYears);
+        BigDecimal bracketValue = getBracketValue(grahamConstant, constantWithTwo, conservativeGrowthRate);
         BigDecimal numerator = stock.getEps().multiply(bracketValue);
-        BigDecimal denominator = one.add(riskFreeRate);
+        BigDecimal denominator = constantWithOne.add(riskFreeRate);
         return (numerator).divide(denominator, 2, java.math.RoundingMode.HALF_UP);
     }
 
