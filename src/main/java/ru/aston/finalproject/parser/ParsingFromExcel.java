@@ -4,5 +4,5 @@ import org.apache.poi.ss.usermodel.Row;
 
 public interface ParsingFromExcel<T> {
 
-    T entityParser(Row currentRow);
+    T excelParser(Row currentRow);
 }

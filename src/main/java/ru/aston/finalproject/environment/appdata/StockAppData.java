@@ -3,8 +3,6 @@ package ru.aston.finalproject.environment.appdata;
 import ru.aston.finalproject.entity.stock.Stock;
 import ru.aston.finalproject.entity.validator.StockBuilderValidator;
 import ru.aston.finalproject.entity.validator.Validate;
-import ru.aston.finalproject.parser.ParsingFromExcel;
-import ru.aston.finalproject.parser.ParsingStockFromExcel;
 import ru.aston.finalproject.parser.StockParser;
 import ru.aston.finalproject.service.loader.ConsoleDataLoader;
 import ru.aston.finalproject.service.loader.FileDataLoader;
@@ -17,8 +15,7 @@ public class StockAppData extends AppData<Stock> {
     private static final StockParser stockParser = new StockParser(stockValidator);
     private static final FileDataLoader<Stock> fileDataLoader = new FileDataLoader<>(stockParser);
     private static final ConsoleDataLoader<Stock> consoleDataLoader = new ConsoleDataLoader<>(stockParser);
-    private static final ParsingFromExcel<Stock> parsingFromExcel = new ParsingStockFromExcel(stockValidator);
-    private static final LoadFromExcel<Stock> loadFromExcel = new LoadFromExcel<>(parsingFromExcel, "stocks");
+    private static final LoadFromExcel<Stock> loadFromExcel = new LoadFromExcel<>(stockParser, "stocks");
     private static final StockLoaderService loaderService =
             new StockLoaderService(fileDataLoader, consoleDataLoader, loadFromExcel);
 

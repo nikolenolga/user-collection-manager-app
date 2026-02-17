@@ -40,7 +40,7 @@ public class LoadFromExcel<T> implements DataLoader<T> {
             Iterator<Row> rows = sheet.iterator();
             rows.next();
             while (rows.hasNext() && stockLists.size() < size) {
-                stockLists.add(parsing.entityParser(rows.next()));
+                stockLists.add(parsing.excelParser(rows.next()));
             }
         } catch (IOException | NoSuchElementException e) {
             throw new AppException(Message.FILE_INPUT_FAILED);

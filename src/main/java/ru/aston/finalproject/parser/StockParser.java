@@ -1,5 +1,6 @@
 package ru.aston.finalproject.parser;
 
+import org.apache.poi.ss.usermodel.Row;
 import ru.aston.finalproject.entity.stock.Stock;
 import ru.aston.finalproject.entity.validator.Validate;
 import ru.aston.finalproject.environment.AppException;
@@ -9,20 +10,22 @@ import static ru.aston.finalproject.util.Message.X_CANNOT_BE_EMPTY;
 
 public class StockParser extends AbstractParser<Stock> {
 
-    private static final String DELIMITER = "\\s+";
-    private static final int LENGTH_PARAMETER = 9;
+    private final Validate<Stock.Builder> stockValidator;
+
     public static final String STOCK_FORMAT =
             "name nowValue maxValue minValue dividends pe(withPE) eps(withEPS) epsFrom5years buyInThisPeriod";
-    private static final int NAME_PARAMETER = 0;
-    private static final int NOW_VALUE_PARAMETER = 1;
-    private static final int MAX_VALUE_PARAMETER = 2;
-    private static final int MIN_VALUE_PARAMETER = 3;
-    private static final int DIVIDENDS_PARAMETER = 4;
-    private static final int PE_PARAMETER = 5;
-    private static final int EPS_PARAMETER = 6;
-    private static final int EPS_FROM_5_YEARS_PARAMETER = 7;
-    private static final int BUY_IN_THIS_PERIOD_PARAMETER = 8;
-    private final Validate<Stock.Builder> stockValidator;
+
+    private static final String DELIMITER = "\\s+";
+    private static final int LENGTH_PARAMETER = 9;
+    private final int NAME_PARAMETER = 0;
+    private final int NOW_VALUE_PARAMETER = 1;
+    private final int MAX_VALUE_PARAMETER = 2;
+    private final int MIN_VALUE_PARAMETER = 3;
+    private final int DIVIDENDS_PARAMETER = 4;
+    private final int PE_PARAMETER = 5;
+    private final int EPS_PARAMETER = 6;
+    private final int EPS_FROM_5_YEARS_PARAMETER = 7;
+    private final int BUY_IN_THIS_PERIOD_PARAMETER = 8;
 
     public StockParser(Validate<Stock.Builder> stockValidator) {
         this.stockValidator = stockValidator;
@@ -63,5 +66,20 @@ public class StockParser extends AbstractParser<Stock> {
         return Stock.builder().setName(name).setNowValue(nowValue).setMaxValue(maxValue).setMinValue(minValue)
                 .setDividends(dividends).setPe(pe).setEps(eps).setEpsFrom5Years(epsFrom5Years)
                 .setBuyInThisPeriod(buyInThisPeriod).build(stockValidator);
+    }
+
+    @Override
+    public Stock excelParser(Row currentRow) {
+        return Stock.builder()
+                .setName(cellWithString(currentRow, NAME_PARAMETER))
+                .setNowValue(changeNumericToString(currentRow, NOW_VALUE_PARAMETER))
+                .setMaxValue(changeNumericToString(currentRow, MAX_VALUE_PARAMETER))
+                .setMinValue(changeNumericToString(currentRow, MIN_VALUE_PARAMETER))
+                .setDividends(changeBooleanToString(currentRow, DIVIDENDS_PARAMETER))
+                .setPe(changeNumericToString(currentRow, PE_PARAMETER))
+                .setEps(changeNumericToString(currentRow, EPS_PARAMETER))
+                .setEpsFrom5Years(changeNumericToString(currentRow, EPS_FROM_5_YEARS_PARAMETER))
+                .setBuyInThisPeriod(changeBooleanToString(currentRow, BUY_IN_THIS_PERIOD_PARAMETER))
+                .build(stockValidator);
     }
 }
