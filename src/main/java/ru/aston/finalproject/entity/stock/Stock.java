@@ -2,7 +2,6 @@ package ru.aston.finalproject.entity.stock;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import ru.aston.finalproject.entity.validator.StockBuilderValidator;
 import ru.aston.finalproject.entity.validator.Validate;
 
 import java.math.BigDecimal;

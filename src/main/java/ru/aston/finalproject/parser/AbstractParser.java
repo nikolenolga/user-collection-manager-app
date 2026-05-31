@@ -55,14 +55,22 @@ public abstract class AbstractParser<T> implements Parsing<T>, ParsingFromExcel<
     }
 
     protected String cellWithString(Row currentRow, int index) {
-        return currentRow.getCell(index).getStringCellValue();
+        if (currentRow.getCell(index) != null) {
+            return currentRow.getCell(index).getStringCellValue();
+        } else return empty;
     }
 
     protected String changeNumericToString(Row currentRow, int index) {
-        return empty + currentRow.getCell(index).getNumericCellValue();
+        if (currentRow.getCell(index) != null) {
+            return empty + currentRow.getCell(index).getNumericCellValue();
+        } else return empty;
+
     }
 
     protected String changeBooleanToString(Row currentRow, int index) {
-        return empty + currentRow.getCell(index).getBooleanCellValue();
+        if (currentRow.getCell(index) != null) {
+            return empty + currentRow.getCell(index).getBooleanCellValue();
+        } else return empty;
+
     }
 }
