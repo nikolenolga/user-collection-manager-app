@@ -1,6 +1,5 @@
 package ru.aston.finalproject.parser;
 
-import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import ru.aston.finalproject.entity.user.BuildUser;
 import ru.aston.finalproject.entity.user.User;

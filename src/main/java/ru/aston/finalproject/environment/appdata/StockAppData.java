@@ -15,9 +15,11 @@ public class StockAppData extends AppData<Stock> {
     private static final StockParser stockParser = new StockParser(stockValidator);
     private static final FileDataLoader<Stock> fileDataLoader = new FileDataLoader<>(stockParser);
     private static final ConsoleDataLoader<Stock> consoleDataLoader = new ConsoleDataLoader<>(stockParser);
-    private static final LoadFromExcel<Stock> loadFromExcel = new LoadFromExcel<>(stockParser, "stocks");
+    private static final FileDataLoader<Stock> fileDataLoader = new FileDataLoader<>(stockParser, "stocks");
     private static final StockLoaderService loaderService =
-            new StockLoaderService(fileDataLoader, consoleDataLoader, loadFromExcel);
+            new StockLoaderService(fileDataLoader, consoleDataLoader
+//                    , loadFromExcel
+            );
 
     public StockAppData() {
         super(stockParser, loaderService, fileDataLoader);

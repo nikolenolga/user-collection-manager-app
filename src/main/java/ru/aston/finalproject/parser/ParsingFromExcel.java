@@ -1,8 +1,8 @@
-package ru.aston.finalproject.parser;
-
-import org.apache.poi.ss.usermodel.Row;
-
-public interface ParsingFromExcel<T> {
-
-    T excelParser(Row currentRow);
-}
+//package ru.aston.finalproject.parser;
+//
+//import org.apache.poi.ss.usermodel.Row;
+//
+//public interface ParsingFromExcel<T> {
+//
+//    T excelParser(Row currentRow);
+//}

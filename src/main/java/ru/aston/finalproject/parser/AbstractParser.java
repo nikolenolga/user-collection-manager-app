@@ -9,7 +9,9 @@ import static ru.aston.finalproject.util.Message.DATA_AT_INDEX_X;
 import static ru.aston.finalproject.util.Message.INVALID_DATA_X;
 import static ru.aston.finalproject.util.Message.X_IS_NOT_A_VALID_X;
 
-public abstract class AbstractParser<T> implements Parsing<T>, ParsingFromExcel<T> {
+public abstract class AbstractParser<T> implements Parsing<T>
+//        , ParsingFromExcel<T>
+{
 
     private static final String NO_DIGITS_REGS = "\\D+";
     private final String empty = "";

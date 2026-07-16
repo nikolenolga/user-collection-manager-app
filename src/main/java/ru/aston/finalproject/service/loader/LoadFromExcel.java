@@ -6,7 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.aston.finalproject.collection.CustomArrayList;
 import ru.aston.finalproject.environment.AppException;
 import ru.aston.finalproject.environment.AppRequest;
-import ru.aston.finalproject.parser.ParsingFromExcel;
+//import ru.aston.finalproject.parser.ParsingFromExcel;
+import ru.aston.finalproject.parser.Parsing;
 import ru.aston.finalproject.util.Message;
 
 import java.io.FileInputStream;
@@ -20,9 +21,9 @@ public class LoadFromExcel<T> implements DataLoader<T> {
 
     private static final String FILE_PATH_PARAMETER = "-path";
     private final String nameSheet;
-    private final ParsingFromExcel<T> parsing;
+    private final Parsing<T> parsing;
 
-    public LoadFromExcel(ParsingFromExcel<T> parsing, String nameSheet) {
+    public LoadFromExcel(Parsing<T> parsing, String nameSheet) {
         this.parsing = parsing;
         this.nameSheet = nameSheet;
     }

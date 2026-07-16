@@ -5,13 +5,14 @@ import ru.aston.finalproject.entity.stock.Stock;
 public class StockLoaderService extends LoaderService<Stock> {
     public static final String LOAD_FROM_FILE = "file";
     public static final String LOAD_FROM_CONSOLE = "console";
-    public static final String LOAD_FROM_EXCEL = "excel";
+//    public static final String LOAD_FROM_EXCEL = "excel";
 
     public StockLoaderService(FileDataLoader<Stock> stockFileDataLoader,
-                              ConsoleDataLoader<Stock> stockConsoleDataLoader,
-                              LoadFromExcel<Stock> loadStockFromExcel) {
+                              ConsoleDataLoader<Stock> stockConsoleDataLoader
+//                              LoadFromExcel<Stock> loadStockFromExcel
+    ) {
         addLoader(LOAD_FROM_FILE, stockFileDataLoader);
         addLoader(LOAD_FROM_CONSOLE, stockConsoleDataLoader);
-        addLoader(LOAD_FROM_EXCEL, loadStockFromExcel);
+//        addLoader(LOAD_FROM_EXCEL, loadStockFromExcel);
     }
 }
