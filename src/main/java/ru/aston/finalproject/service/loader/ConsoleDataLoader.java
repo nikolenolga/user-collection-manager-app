@@ -23,7 +23,6 @@ public class ConsoleDataLoader<T> extends AbstractLoaderWithParser<T> {
 
     @Override
     public Stream<T> loadEntityList(Integer size, AppRequest request) {
-        System.out.printf((Message.ENTER_USERS_EXPECTED_FORMAT_S) + "%n", USER_FORMAT);
         System.out.printf((Message.ENTER_X_TO_INTERRUPT_CONSOLE_INPUT) + "%n", STOP_CONSOLE_LOADER_COMMAND);
 
         try {

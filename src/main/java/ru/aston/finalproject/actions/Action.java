@@ -10,8 +10,8 @@ public enum Action {
             """
                     \t load stock ore user list
                     \t\t -size=<size> -type=file \t -path=<path-to-file> \t load from file path
+                    \t\t -size=<size> -type=excel \t -path=<path-to-file> \t -sheet=<name-sheet> \t load from excel file
                     \t\t -size=<size> -type=console \t\t\t\t\t\t load from console input
-                    \t\t -size=<size> -type=excel \t -path=<path-to-file> \t load from excel file (sheet has named stocks)
                     \t\t -size=<size> -type=random \t\t\t\t\t\t\t load random user list"""),
     write(new WriteAction<>(),
             """
@@ -34,7 +34,7 @@ public enum Action {
                     \t\t -ceiling=<value> \t\t\t\t\t\t\t\t\t with ceiling parameter
                     \t\t -value=<value> \t\t\t\t\t\t\t\t\t just value parameter
                     \t\t -floor=<value> -ceiling=<value> \t\t\t\t\t with both borders
-                    \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (in value need write PE stock)"""),
+                    \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (in value need write PE stock)"""),
     print(new PrintAction<>(),
             " \t print current saved list as string"),
     show(new ShowAction<>(),
