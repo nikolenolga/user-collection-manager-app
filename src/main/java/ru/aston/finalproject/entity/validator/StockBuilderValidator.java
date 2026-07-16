@@ -29,10 +29,10 @@ public class StockBuilderValidator implements Validate<Stock.Builder> {
             throw new AppException(INVALID_DATA);
         }
         if (nowValue.compareTo(maxValue) > 0) {
-            throw new AppException(nameStock + "nowValue: " + value + " can't be greater than maxValue");
+            throw new AppException(nameStock + " nowValue: " + value + " can't be greater than maxValue");
         }
         if (nowValue.compareTo(minValue) < 0) {
-            throw new AppException(nameStock + "nowValue can't be less than minValue");
+            throw new AppException(nameStock + " nowValue can't be less than minValue");
         }
     }
 
@@ -42,7 +42,7 @@ public class StockBuilderValidator implements Validate<Stock.Builder> {
         }
         value = nowValue.max(maxValue).max(minValue);
         if (maxValue.compareTo(value) != 0) {
-            throw new AppException(nameStock + "maxValue can't be less than all Values");
+            throw new AppException(nameStock + " maxValue can't be less than all Values");
         }
     }
 
@@ -52,7 +52,7 @@ public class StockBuilderValidator implements Validate<Stock.Builder> {
         }
         value = nowValue.min(maxValue).min(minValue);
         if (minValue.compareTo(value) != 0) {
-            throw new AppException(nameStock + "minValue can't be greater than all Values");
+            throw new AppException(nameStock + " minValue can't be greater than all Values");
         }
     }
 }
