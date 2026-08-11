@@ -9,7 +9,7 @@ import ru.aston.finalproject.util.Message;
 
 public class LoadAction<T> extends AppAction<T> {
 
-    private static final Integer EXPECTED_MAX_PARAMETERS_AMOUNT = 3;
+    private static final Integer EXPECTED_MAX_PARAMETERS_AMOUNT = 4;
     private static final String SIZE_PARAMETER = "-size";
     private static final String LOADER_TYPE_PARAMETER = "-type";
 
@@ -25,6 +25,6 @@ public class LoadAction<T> extends AppAction<T> {
 
         appData.getEntityList().addAll(entities);
 
-        System.out.println(Message.X_ENTITIES_LOADED.formatted(entities.size()));
+        System.out.printf((Message.X_ENTITIES_LOADED) + "%n", entities.size());
     }
 }

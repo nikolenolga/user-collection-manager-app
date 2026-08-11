@@ -24,6 +24,7 @@ public class FileDataLoader<T> extends AbstractLoaderWithParser<T> {
 
     @Override
     public Stream<T> loadEntityList(Integer size, AppRequest request) {
+
         String filePath = request.getStringParameter(FILE_PATH_PARAMETER);
 
         try {
@@ -36,4 +37,5 @@ public class FileDataLoader<T> extends AbstractLoaderWithParser<T> {
             throw new AppException(Message.FILE_INPUT_FAILED);
         }
     }
+
 }

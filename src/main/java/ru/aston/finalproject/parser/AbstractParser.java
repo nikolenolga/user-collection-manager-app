@@ -1,5 +1,6 @@
 package ru.aston.finalproject.parser;
 
+import org.apache.poi.ss.usermodel.Row;
 import ru.aston.finalproject.environment.AppException;
 
 import static ru.aston.finalproject.util.ConstantFields.SPACE;
@@ -8,9 +9,10 @@ import static ru.aston.finalproject.util.Message.DATA_AT_INDEX_X;
 import static ru.aston.finalproject.util.Message.INVALID_DATA_X;
 import static ru.aston.finalproject.util.Message.X_IS_NOT_A_VALID_X;
 
-public abstract class AbstractParser<T> implements Parsing<T> {
+public abstract class AbstractParser<T> implements Parsing<T>{
 
     private static final String NO_DIGITS_REGS = "\\D+";
+    private final String empty = "";
 
     protected String[] preparingForParsing(String data, String delimiter, int lengthParameter) {
         String[] dataArray = data.split(delimiter);
@@ -50,5 +52,25 @@ public abstract class AbstractParser<T> implements Parsing<T> {
             stockConstr[i] = stockConstr[i].replace(",", ".");
         }
         return stockConstr;
+    }
+
+    protected String cellWithString(Row currentRow, int index) {
+        if (currentRow.getCell(index) != null) {
+            return currentRow.getCell(index).getStringCellValue();
+        } else return empty;
+    }
+
+    protected String changeNumericToString(Row currentRow, int index) {
+        if (currentRow.getCell(index) != null) {
+            return empty + currentRow.getCell(index).getNumericCellValue();
+        } else return empty;
+
+    }
+
+    protected String changeBooleanToString(Row currentRow, int index) {
+        if (currentRow.getCell(index) != null) {
+            return empty + currentRow.getCell(index).getBooleanCellValue();
+        } else return empty;
+
     }
 }

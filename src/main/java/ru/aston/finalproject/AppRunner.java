@@ -2,7 +2,7 @@ package ru.aston.finalproject;
 
 import ru.aston.finalproject.environment.appdata.AppData;
 import ru.aston.finalproject.util.Message;
-import ru.aston.finalproject.util.Switcher;
+import ru.aston.finalproject.environment.Switcher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
